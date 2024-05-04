@@ -8,48 +8,26 @@ export const emailRouter = express.Router();
 
 emailRouter.post("/flightInquiry", async (req, res) => {
 	try {
-		const {
-			departure,
-			returnlocation,
-			departureDate,
-			returnDate,
-			adults,
-			infants,
-			teens,
-			name,
-			phoneNumber,
-			email,
-		} = req.body;
-
-		await sendBookingDetailsEmail(
-			departure,
-			returnlocation,
-			departureDate,
-			returnDate,
-			adults,
-			infants,
-			teens,
-			name,
-			phoneNumber,
-			email
-		);
-
-		return res.send({ message: "Data received and email sent successfully" });
+		await sendBookingDetailsEmail(req.body);
+		return res.status(200).send({ message: "Inquiry Submitted Successfully." });
 	} catch (error) {
 		console.log(error);
-		return res.send({ message: "Could not place inquiry.Try Again" });
+		return res
+			.status(500)
+			.send({ message: "Could not place inquiry.Try Again" });
 	}
 });
 
 emailRouter.post("/feedback", async (req, res) => {
 	try {
-		const { name, review } = req.body;
-		await sendFeedback(name, review);
-		return res.send({
+		await sendFeedback(req.body);
+		return res.status(200).send({
 			message: "Feedback sent successfully",
 		});
 	} catch (error) {
 		console.log(error);
-		return res.send({ message: "Could not send feedback.Try Again" });
+		return res
+			.status(200)
+			.send({ message: "Could not send feedback.Try Again" });
 	}
 });
